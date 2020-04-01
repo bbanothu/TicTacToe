@@ -1,13 +1,1 @@
-I used eclipse to run my project by executing the Main.java
-TicTacToe.java, blank.jpg, o.jpg, and x.jpg are required in order for the program to operate
-Project structure for Eclipse is:
-	src/application/Main.java
-	src/application/TicTacToe.java
-	src/o.jpg
-	src/x.jpg
-	srx/blank.jpg
-	
-Side note the argument string we were told to add to eclipse during the lab broke my project/any javaFX I attempted to run.
-It would give a JVM error and not execute.
-
-String in question: "--module-path=path-to-javafx-skd/lib --add-modules=javafx.controls"
+to run, add this to your JVM.  "--module-path=path-to-javafx-skd/lib --add-modules=javafx.controls"

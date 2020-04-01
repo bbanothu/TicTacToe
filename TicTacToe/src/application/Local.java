@@ -39,7 +39,6 @@ public class Local extends Stage {
 	private String xTurn = "X's turn!";
 	private String oTurn = "O's turn!";
 	
-	
 	Local() {		
 		game = new TicTacToe();
 		

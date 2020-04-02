@@ -30,8 +30,10 @@ public class TicTacToe {
 	}
 	
 	public boolean isOpen(int col, int row) {
-		if(board[col][row].equals("X") || board[col][row].equals("O")) return false;
-		return true;
+		if(board[col][row].equals("-")) { 
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -41,6 +43,7 @@ public class TicTacToe {
 		return temp;
 	}
 	
+	// Bad AI
 	public Pair<Integer, Integer> aiMove() {
 		Pair<Integer, Integer> temp = null;
 		boolean breakLoop = false;
@@ -60,16 +63,17 @@ public class TicTacToe {
 		    	 }
 		    }
 		}
-		
 		return temp;
 }
 	
-	
+	// Make Move
 	public void setTile(int col, int row, String s) {
 		board[col][row] = s;
 		turn++;
 		checkWinner(col, row, s);
 	}
+	
+	// Winning conditions
 	public boolean checkWinner(int x, int y, String move) {
 		if(turn >= 6 ) {
 			int x_1 = x;

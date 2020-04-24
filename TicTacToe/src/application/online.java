@@ -49,9 +49,9 @@ public class online extends Stage {
 	// Online Specific Variables
 	Socket newSocket;
 	Client usr;
-	Listerner incomingMessage;
+	Reader incomingMessage;
 	boolean myTurn = false;
-	public String p1OrP2 = "";
+	public String player = "";
 
 	public HashMap<Pair<Integer, Integer>, ImageView> images = new HashMap<Pair<Integer, Integer>, ImageView>();
 
@@ -190,29 +190,23 @@ public class online extends Stage {
 		});
 		grid.add(resetBoard, 3, 4);
 		grid.setGridLinesVisible(true);
-
 		Scene scene = new Scene(grid, 700, 500);
-
 		Stage subStage = new Stage();
 		subStage.setTitle("Tic-Tac-Toe");
 		subStage.setScene(scene);
 		subStage.show();
 
-		p1OrP2 = usr.getMessage();
-		System.out.println(p1OrP2);
-
-		if (p1OrP2.contentEquals("p2")) {
+		player = usr.getMessage();
+		if (player.contentEquals("p2")) {
 			myTurn = false;
 
 			aiMove(usr.getMessage());
-			p1OrP2 = "";
 		} else {
 			myTurn = true;
 		}
 
-		incomingMessage = new Listerner(usr.in, this);
+		incomingMessage = new Reader(usr.in, this);
 		new Thread(incomingMessage).start();
-
 	}
 
 	/**
@@ -229,7 +223,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(0, 0, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("0-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -256,7 +250,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(0, 1, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("0-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -283,7 +277,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(0, 2, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("0-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -310,7 +304,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(1, 0, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("1-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -337,7 +331,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(1, 1, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("1-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -364,7 +358,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(1, 2, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("1-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -391,7 +385,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(2, 0, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("2-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -418,7 +412,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(2, 1, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("2-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -445,7 +439,7 @@ public class online extends Stage {
 							// if odd
 							game.setTile(2, 2, "X");
 							target.setImage(setX());
-							turn.setText(xTurn);
+							turn.setText(oTurn);
 							usr.sendMessage("2-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -473,7 +467,6 @@ public class online extends Stage {
 			Pair<Integer, Integer> temp = new Pair<Integer, Integer>(x, y);
 			ImageView target = (ImageView) images.get(new Pair<Integer, Integer>(temp.getKey(), temp.getValue()));
 			target.setImage(setO());
-			//turn.setText(xTurn);
 		}
 	}
 
@@ -489,11 +482,11 @@ public class online extends Stage {
 		return new Image("x.jpg");
 	}
 
-	class Listerner implements Runnable {
+	class Reader implements Runnable {
 		private BufferedReader in;
 		online myUI;
 
-		public Listerner(BufferedReader in, online myUI) {
+		public Reader(BufferedReader in, online myUI) {
 			this.in = in;
 			this.myUI = myUI;
 		}
@@ -512,7 +505,6 @@ public class online extends Stage {
 
 			}
 		}
-
 	}
 
 	class Client {
@@ -527,15 +519,12 @@ public class online extends Stage {
 		public void start() {
 			try {
 				conn = new Socket(hostName, 1234);
-				setup();
+				out = new PrintWriter(conn.getOutputStream());
+				out.flush();
+				in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			} catch (IOException e) {
+				
 			}
-		}
-
-		private void setup() throws IOException {
-			out = new PrintWriter(conn.getOutputStream());
-			out.flush();
-			in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		}
 
 		private void sendMessage(String msg) {
@@ -545,8 +534,7 @@ public class online extends Stage {
 		}
 
 		protected String getMessage() throws IOException {
-			String message = "";
-			message = in.readLine();
+			String message = in.readLine();
 			System.out.println(message);
 			return message;
 		}

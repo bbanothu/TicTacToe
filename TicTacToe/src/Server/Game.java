@@ -56,29 +56,20 @@ class Game implements Runnable
 	
 	@Override
     public void run() { ;
-    
     sendMessage(p1Out, "p1");
     sendMessage(p2Out, "p2");
+    
         while (true){ 
-        	
         	try {
         		String p1move = p1In.readLine();
         		p1move = p1move.substring(p1move.length()-3); 
-        		
-        		System.out.println(p1move + " :p1 made move");
-        		
 				sendMessage(p2Out, p1move);
-				
-        		System.out.println(" sent move to p2");
 				
         		String p2move = p2In.readLine();
         		p2move = p2move.substring(p2move.length()-3); 
-        		System.out.println(p2move + " :p2 made move");
 				sendMessage(p1Out, p2move);
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
         }
     } 

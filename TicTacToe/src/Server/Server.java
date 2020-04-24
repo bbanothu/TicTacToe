@@ -11,31 +11,14 @@ import java.net.*;
   
 // Server class 
 public class Server  { 
-    // Vector to store active clients 
+
     static Vector<User> ar = new Vector<>(); 
-    // counter for clients 
     static int i = 0; 
-    
-//	class User {
-//        BufferedReader in;
-//        PrintWriter out;
-//        Socket conn; 
-//        String move = ""; 
-//		
-//		public User(Socket conn, BufferedReader in, PrintWriter out, String move) {
-//			this.in = in;
-//			this.out = out;
-//			this.conn = conn; 
-//			this.move = move; 
-//		}
-//	}
   
     public static void main(String[] args) throws IOException  { 
-
-        ServerSocket Listen = new ServerSocket(1234); 
+        @SuppressWarnings("resource")
+		ServerSocket Listen = new ServerSocket(1234); 
         Socket newConnection; 
-          
-
         while (true)  
         { 
         	newConnection = Listen.accept(); 
@@ -46,23 +29,15 @@ public class Server  {
             PrintWriter outputStream = new PrintWriter(newConnection.getOutputStream()); 
               
             System.out.println("Creating a new handler for this client..."); 
-            // Create a new handler object for handling this request. 
             User x = new User(newConnection, inputStream, outputStream, ""); 
   
-//			@SuppressWarnings("deprecation")
-//			String print = inputStream.readLine();
-//			System.out.println(print); 
-            
-            // Create a new Thread with this object.
               
             System.out.println("Adding this client to active client list"); 
-            // add this client to active clients list 
             ar.add(x); 
+            i++;
   
-            
             if(ar.size() >= 2) {
             	TicTacToe board = new TicTacToe();
-            	
             	User p1 = ar.get(0);
             	User p2 = ar.get(1);
             	p1.move = "X";
@@ -74,12 +49,9 @@ public class Server  {
             	Game game = new Game(p1.conn, p2.conn, p1.out, p2.out, p1.in, p2.in); 
                 Thread gameThread = new Thread(game);
                 gameThread.start(); 
-
-                
                 System.out.println("Running Game!"); 
-            }
-            i++; 
-  
+                i = i-2;
+            } 
         } 
     }
 

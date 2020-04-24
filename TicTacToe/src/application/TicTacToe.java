@@ -145,4 +145,11 @@ public class TicTacToe {
 		}
 		return b;
 	}
+
+	public String move() {
+		if(turn %2 == 0) {
+			return "O";
+		}
+		return "X";
+	}
 }

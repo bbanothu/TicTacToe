@@ -1,5 +1,6 @@
 package application;
 	
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -15,6 +16,10 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+
+import java.io.IOException;
+
+import Server.Server;
 
 public class Main extends Application {
     
@@ -36,9 +41,20 @@ public class Main extends Application {
         
         Button aiPlay = new Button("Play against AI");
         aiPlay.setOnAction(eve-> new Ai());
+        
+        Button onlinePlay = new Button("Play online");
+        onlinePlay.setOnAction(eve-> {
+			try {
+				new online();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
             
         root.getChildren().add(localPlay);
         root.getChildren().add(aiPlay);
+        root.getChildren().add(onlinePlay);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

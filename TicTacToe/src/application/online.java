@@ -35,7 +35,6 @@ public class online extends Stage {
 	public ImageView bottomRight;
 
 	public Button resetBoard;
-
 	public Label turn;
 	public Label xScore;
 	public Label oScore;
@@ -45,14 +44,17 @@ public class online extends Stage {
 
 	private String xTurn = "X's turn!";
 	private String oTurn = "O's turn!";
-
 	// Online Specific Variables
 	Socket newSocket;
 	Client usr;
 	Reader incomingMessage;
 	boolean myTurn = false;
 	public String player = "";
-
+	public String myChar= "";
+	public String opChar = "";
+	public Image myImage = null;
+	public Image opImage = null;
+	
 	public HashMap<Pair<Integer, Integer>, ImageView> images = new HashMap<Pair<Integer, Integer>, ImageView>();
 
 	public void initHashMap() {
@@ -174,6 +176,10 @@ public class online extends Stage {
 		resetBoard.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
+				if(game.getIsOver()) {
+					myTurn = true;
+					usr.sendMessage("reset");
+				}
 				game.init();
 				turn.setText(xTurn);
 				topLeft.setImage(setBlank());
@@ -186,6 +192,7 @@ public class online extends Stage {
 				bottomMid.setImage(setBlank());
 				bottomRight.setImage(setBlank());
 				resetBoard.setVisible(false);
+				
 			}
 		});
 		grid.add(resetBoard, 3, 4);
@@ -199,9 +206,16 @@ public class online extends Stage {
 		player = usr.getMessage();
 		if (player.contentEquals("p2")) {
 			myTurn = false;
-
+			myChar = "O";
+			opChar = "X";
+			myImage = setO();
+			opImage = setX();
 			aiMove(usr.getMessage());
 		} else {
+			myChar = "X";
+			opChar = "O";
+			myImage = setX();
+			opImage = setO();
 			myTurn = true;
 		}
 
@@ -221,9 +235,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(0, 0)) {
 							// if odd
-							game.setTile(0, 0, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(0, 0, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("0-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -232,7 +246,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -248,9 +262,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(0, 1)) {
 							// if odd
-							game.setTile(0, 1, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(0, 1, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("0-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -259,7 +273,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -275,9 +289,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(0, 2)) {
 							// if odd
-							game.setTile(0, 2, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(0, 2, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("0-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -286,7 +300,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -302,9 +316,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(1, 0)) {
 							// if odd
-							game.setTile(1, 0, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(1, 0, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("1-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -313,7 +327,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -329,9 +343,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(1, 1)) {
 							// if odd
-							game.setTile(1, 1, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(1, 1, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("1-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -356,9 +370,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(1, 2)) {
 							// if odd
-							game.setTile(1, 2, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(1, 2, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("1-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -367,7 +381,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -383,9 +397,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(2, 0)) {
 							// if odd
-							game.setTile(2, 0, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(2, 0, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("2-0");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -394,7 +408,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -410,9 +424,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(2, 1)) {
 							// if odd
-							game.setTile(2, 1, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(2, 1, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("2-1");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -421,7 +435,7 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
@@ -437,9 +451,9 @@ public class online extends Stage {
 					if (!game.getIsOver()) {
 						if (game.isOpen(2, 2)) {
 							// if odd
-							game.setTile(2, 2, "X");
-							target.setImage(setX());
-							turn.setText(oTurn);
+							game.setTile(2, 2, myChar);
+							target.setImage(setMyImage());
+							turn.setText("Wait for player");
 							usr.sendMessage("2-2");
 							myTurn = false;
 							if (game.getIsOver()) {
@@ -448,26 +462,43 @@ public class online extends Stage {
 							}
 						}
 					} else {
-						System.out.println("GAME OVER");
+						turn.setText("GAME OVER");
 					}
 				} else {
 					turn.setText("Not your Turn");
 				}
 			}
 		});
+		
+		
 	}
+	
 
 	public void aiMove(String move) {
-		if (!game.getIsOver()) {
-			myTurn = true;
-			move = move.substring(move.length() - 3);
-			int x = Integer.parseInt(move.substring(0, move.indexOf("-")));
-			int y = Integer.parseInt(move.substring(move.indexOf("-") + 1));
-			game.setTile(x, y, "O");
-			Pair<Integer, Integer> temp = new Pair<Integer, Integer>(x, y);
-			ImageView target = (ImageView) images.get(new Pair<Integer, Integer>(temp.getKey(), temp.getValue()));
-			target.setImage(setO());
+		System.out.println(move + " in ai move");
+		if(move.contains("set")) {
+			System.out.println(move);
+			resetBoard.fire(); 
+		}else {
+			if (!game.getIsOver()) {
+				myTurn = true;
+				move = move.substring(move.length() - 3);
+				int x = Integer.parseInt(move.substring(0, move.indexOf("-")));
+				int y = Integer.parseInt(move.substring(move.indexOf("-") + 1));
+				game.setTile(x, y, opChar);
+				Pair<Integer, Integer> temp = new Pair<Integer, Integer>(x, y);
+				ImageView target = (ImageView) images.get(new Pair<Integer, Integer>(temp.getKey(), temp.getValue()));
+				target.setImage(setOpImage());
+				//this.turn.setText("Your Move");
+			}
+			if (game.getIsOver()) {
+				resetBoard.setVisible(true);
+				this.turn.setText(game.getWinner());
+			}
 		}
+
+		
+		
 	}
 
 	private Image setBlank() {
@@ -480,6 +511,14 @@ public class online extends Stage {
 
 	private Image setX() {
 		return new Image("x.jpg");
+	}
+	
+	private Image setMyImage() {
+		return myImage;
+	}
+	
+	private Image setOpImage() {
+		return opImage;
 	}
 
 	class Reader implements Runnable {

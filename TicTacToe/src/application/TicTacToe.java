@@ -77,8 +77,6 @@ public class TicTacToe {
 	public boolean checkWinner(int x, int y, String move) {
 		if(turn >= 6 ) {
 			int x_1 = x;
-			int y_1 = y;
-			
 			if(x == 0) {
 				x++;
 				
@@ -101,7 +99,6 @@ public class TicTacToe {
 				isOver = true;
 			}
 			
-			
 			// check diagonals
 			if(board[x-1][y-1] == move &&  board[x][y] == move && board[x+1][y+1] == move) {
 				isOver = true;
@@ -110,7 +107,7 @@ public class TicTacToe {
 				isOver = true;
 			}
 			if(isOver) {
-				winner = "Congratulations, " + move + " wins the game";
+				winner =   move + " wins the game";
 			}
 			
 		}

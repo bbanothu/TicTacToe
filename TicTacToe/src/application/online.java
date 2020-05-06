@@ -42,8 +42,7 @@ public class online extends Stage {
 	private GridPane grid;
 	private TicTacToe game;
 
-	private String xTurn = "X's turn!";
-	private String oTurn = "O's turn!";
+	private String xTurn = "Your turn!";
 	// Online Specific Variables
 	Socket newSocket;
 	Client usr;
